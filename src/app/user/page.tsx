@@ -8,7 +8,7 @@ import StartupDetails from "@/components/userprofile/StartupDetails";
 
 export default function UserProfile() {
   return (
-    <div className="h-[calc(100vh-64px)] bg-gray-50">
+    <div className="h-[calc(100vh+30px)] bg-gray-50">
       <Navbar />
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-screen-lg mx-auto px-6 py-8">
