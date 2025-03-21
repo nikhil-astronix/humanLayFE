@@ -20,7 +20,7 @@ export function VerifyForm({ email, onResendClick }: VerifyFormProps) {
         <h2 className="text-2xl font-bold text-gray-900">Check Your Email!</h2>
         <div className="space-y-1">
           <p className="text-sm text-gray-600">
-            We've sent a verification link to
+            {`We've sent a verification link to`}
           </p>
           <p className="text-sm font-medium text-gray-900">{email}</p>
           <p className="text-sm text-gray-600">
@@ -39,8 +39,8 @@ export function VerifyForm({ email, onResendClick }: VerifyFormProps) {
 
       {/* Help Text */}
       <p className="text-sm text-gray-500">
-        Didn't receive it? Check your spam folder or resend the link.
+        {`Didn't receive it? Check your spam folder or resend the link.`}
       </p>
     </div>
   );
-} 
+}
