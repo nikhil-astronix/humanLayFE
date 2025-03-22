@@ -20,7 +20,7 @@ export function AuthSteps({ steps }: AuthStepsProps) {
           <div 
             className="h-full bg-green-500 transition-all duration-200"
             style={{ 
-              width: steps[0].status === "complete" ? "50%" : "0%"
+              width: steps[2].status === "current" ? "100%" : steps[0].status === "complete" ? "50%" : "0%"
             }}
           />
         </div>

@@ -1,36 +1,43 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
+  const pathname = usePathname();
+
   return (
-    <nav className="bg-white border-b border-gray-200">
+    <nav className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Left side - Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-orange-600 text-2xl font-bold">
+        <div className="flex justify-between h-16 ">
+          <div className="flex">
+            <Link
+              href="/"
+              className="flex items-center text-orange-600 font-bold text-xl"
+            >
               Human
             </Link>
           </div>
-
-          {/* Right side - Navigation */}
           <div className="flex items-center space-x-4">
             <Link
               href="/grants"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm"
+              className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
+                pathname === "/grants"
+                  ? "border-orange-600 text-orange-600"
+                  : "border-transparent text-gray-900 hover:text-orange-600"
+              }`}
             >
               Grants
             </Link>
             <Link
-              href="/login"
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm"
+              href="/auth/login"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 hover:text-orange-600"
             >
               Login
             </Link>
             <Link
-              href="/signup"
-              className="text-sm font-medium text-white bg-orange-600 px-4 py-2 rounded-[100px] hover:bg-orange-700 transition-colors"
+              href="/auth/register"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-600"
             >
               Sign Up
             </Link>

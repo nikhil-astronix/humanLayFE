@@ -13,19 +13,19 @@ export function Footer() {
         <div className="flex items-center space-x-6">
           <Link
             href="/about"
-            className="text-sm text-gray-500 hover:text-gray-900"
+            className="text-sm text-gray-500 hover:text-orange-600"
           >
             About
           </Link>
           <Link
             href="/contact"
-            className="text-sm text-gray-500 hover:text-gray-900"
+            className="text-sm text-gray-500 hover:text-orange-600"
           >
             Contact
           </Link>
           <Link
             href="/privacy"
-            className="text-sm text-gray-500 hover:text-gray-900"
+            className="text-sm text-gray-500 hover:text-orange-600"
           >
             Privacy
           </Link>

@@ -3,11 +3,11 @@ import { Navbar } from "@/components/layout/navbar";
 
 export default function RegisterPage() {
   return (
-    <div className="h-[calc(100vh-64px)] bg-gray-50">
+    <>
       <Navbar />
-      <div className="h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <main className="flex-1 flex items-center justify-center py-16 bg-gray-50">
         <AuthForm />
-      </div>
-    </div>
+      </main>
+    </>
   );
 } 
