@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, Filter, PlusCircle, Mail, ExternalLink } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const grants = [
   {
     id: 1,
     name: "Faire Small Business Grant",
+    slug: "faire-small-business-grant",
     amount: "$5,000",
     stats: {
       totalApplications: 10,
@@ -34,6 +36,7 @@ const grants = [
   {
     id: 2,
     name: "Tech Innovation Grant",
+    slug: "tech-innovation-grant",
     amount: "$10,000",
     stats: {
       totalApplications: 15,
@@ -75,10 +78,13 @@ export function ActiveGrants() {
             <Filter className="h-4 w-4 mr-1.5" />
             Filter
           </button>
-          <button className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700">
+          <Link
+            href="/grants/new"
+            className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700"
+          >
             <PlusCircle className="h-4 w-4 mr-1.5" />
             New Grant
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -139,7 +145,10 @@ export function ActiveGrants() {
                         key={applicant.id}
                         className="flex items-center justify-between py-1 px-1 bg-gray-50 rounded-lg border border-gray-100"
                       >
-                        <div className="flex items-center ">
+                        <Link
+                          href={`/grants/${grant.slug}/applicants/${applicant.id}`}
+                          className="flex items-center flex-1 hover:bg-gray-100 rounded-lg p-2"
+                        >
                           <Image
                             className="h-10 w-10 rounded-full"
                             src={applicant.avatar}
@@ -155,7 +164,7 @@ export function ActiveGrants() {
                               {applicant.company}
                             </p>
                           </div>
-                        </div>
+                        </Link>
                         <div className="flex items-center gap-3">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
