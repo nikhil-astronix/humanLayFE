@@ -155,7 +155,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 type="text"
                 id="name"
                 placeholder="e.g., NIH AI Research Grant"
-                className="mt-2 block w-full rounded-md border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
@@ -173,7 +173,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                   type="text"
                   id="amount"
                   placeholder="50,000"
-                  className="block w-full pl-7 rounded-md border-gray-500 p-2 text-gray-900 focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                  className="block w-full pl-7 rounded-md border border-gray-500 p-2 text-gray-900 focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                   required
@@ -190,7 +190,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               id="description"
               rows={4}
               placeholder="Describe the grant and its objectives..."
-              className="mt-2 block w-full rounded-md border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+              className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               required
@@ -205,7 +205,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               <input
                 type="date"
                 id="deadline"
-                className="mt-2 block w-full text-gray-900 rounded-md border-gray-500 p-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                className="mt-2 block w-full text-gray-900 rounded-md border border-gray-500 p-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.applicationDeadline}
                 onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
                 required
@@ -219,7 +219,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 type="url"
                 id="link"
                 placeholder="https://"
-                className="mt-2 block w-full text-gray-900 rounded-md border-gray-500 p-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                className="mt-2 block w-full text-gray-900 rounded-md border border-gray-500 p-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.externalLink}
                 onChange={(e) => setFormData({ ...formData, externalLink: e.target.value })}
               />
@@ -236,7 +236,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               </label>
               <select
                 id="industry"
-                className="mt-2 block w-full rounded-md border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.industry}
                 onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
                 required
@@ -253,7 +253,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               </label>
               <select
                 id="stage"
-                className="mt-2 block w-full rounded-md border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.stage}
                 onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
                 required
@@ -270,7 +270,7 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               </label>
               <select
                 id="demographics"
-                className="mt-2 block w-full rounded-md border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
+                className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.demographics}
                 onChange={(e) => setFormData({ ...formData, demographics: e.target.value })}
               >

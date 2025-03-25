@@ -6,8 +6,37 @@ import { ApplicantProfile } from "@/components/grants/applicant-profile";
 import { MeetingScheduler } from "@/components/grants/meeting-scheduler";
 import { useParams } from "next/navigation";
 
+interface Applicant {
+  name: string;
+  status: string;
+  industry: string;
+  location: string;
+  role: string;
+  avatar: string;
+  about: string;
+  grantDetails: {
+    amount: string;
+    awardDate: string;
+  };
+  achievements: Array<{
+    icon: string;
+    text: string;
+  }>;
+}
+
+interface Grant {
+  name: string;
+  applicants: {
+    [key: string]: Applicant;
+  };
+}
+
+interface GrantsData {
+  [key: string]: Grant;
+}
+
 // Mock data mapping for grants
-const grantsData = {
+const grantsData: GrantsData = {
   "faire-small-business-grant": {
     name: "Faire Small Business Grant",
     applicants: {
@@ -106,8 +135,8 @@ export default function ApplicantDetailsPage() {
   const grantId = params.grantId as string;
   const applicantId = params.applicantId as string;
 
-  const grantData = grantsData[grantId as keyof typeof grantsData];
-  const applicantData = grantData?.applicants[applicantId as keyof typeof grantData.applicants];
+  const grantData = grantsData[grantId] as Grant;
+  const applicantData = grantData?.applicants[applicantId] as Applicant;
 
   if (!grantData || !applicantData) {
     return <div>Applicant not found</div>;

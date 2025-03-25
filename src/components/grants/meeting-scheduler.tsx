@@ -120,44 +120,44 @@ export function MeetingScheduler() {
   }
 
   return (
-    <div className="bg-white rounded-lg p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Schedule a Meeting</h2>
+    <div className="bg-white rounded-lg p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-gray-900 mb-6">Schedule a Meeting</h2>
 
       {/* Calendar */}
       <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <button 
             onClick={prevMonth}
-            className="p-1.5 hover:bg-gray-100 rounded-full"
+            className="p-1 hover:bg-gray-100 rounded-full"
           >
-            <ChevronLeft className="h-5 w-5 text-gray-500" />
+            <ChevronLeft className="h-4 w-4 text-gray-500" />
           </button>
-          <h2 className="text-base font-semibold text-gray-900">
+          <h2 className="text-sm font-semibold text-gray-900">
             {formatDate(currentDate)}
           </h2>
           <button 
             onClick={nextMonth}
-            className="p-1.5 hover:bg-gray-100 rounded-full"
+            className="p-1 hover:bg-gray-100 rounded-full"
           >
-            <ChevronRight className="h-5 w-5 text-gray-500" />
+            <ChevronRight className="h-4 w-4 text-gray-500" />
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-center mb-2">
+        <div className="grid grid-cols-7 gap-0.5 text-center mb-1">
           {daysOfWeek.map((day) => (
-            <div key={day} className="text-xs font-medium text-gray-500">
+            <div key={day} className="text-[10px] font-medium text-gray-500">
               {day}
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-center">
+        <div className="grid grid-cols-7 gap-0.5 text-center">
           {getDaysInMonth().map((day, index) => (
             <button
               key={index}
               onClick={() => handleDateSelect(day.date)}
               disabled={isPastDate(day.date)}
-              className={`p-2 text-sm rounded-full relative
+              className={`p-1 text-xs rounded-full relative
                 ${isSelected(day.date)
                   ? "bg-orange-600 text-white"
                   : day.isCurrentMonth
@@ -166,7 +166,7 @@ export function MeetingScheduler() {
                     : "text-gray-900 hover:bg-gray-100"
                   : "text-gray-400"
                 }
-                ${isToday(day.date) && !isSelected(day.date) ? "ring-2 ring-orange-600 ring-offset-1" : ""}
+                ${isToday(day.date) && !isSelected(day.date) ? "ring-1 ring-orange-600 ring-offset-1" : ""}
               `}
             >
               {day.date.getDate()}

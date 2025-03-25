@@ -12,20 +12,30 @@ interface AuthStepsProps {
 }
 
 export function AuthSteps({ steps }: AuthStepsProps) {
+  // Calculate progress width based on current step and completion
+  const getProgressWidth = () => {
+    const completedSteps = steps.filter(step => step.status === "complete").length;
+    const currentStep = steps.findIndex(step => step.status === "current") + 1;
+    
+    if (currentStep === 1) return "0%";
+    if (completedSteps === steps.length) return "100%";
+    
+    // Calculate percentage based on completed steps
+    return `${(completedSteps / (steps.length - 1)) * 100}%`;
+  };
+
   return (
     <nav aria-label="Progress" className="mb-8">
       <ol role="list" className="flex items-center justify-between w-full relative">
         {/* Progress Line */}
-        <div className="absolute top-4 left-0 w-full h-[2px] bg-gray-200">
+        <div className="absolute top-4 left-0 w-[calc(100%-1rem)] h-[2px] bg-gray-200">
           <div 
             className="h-full bg-green-500 transition-all duration-200"
-            style={{ 
-              width: steps[2].status === "current" ? "100%" : steps[0].status === "complete" ? "50%" : "0%"
-            }}
+            style={{ width: getProgressWidth() }}
           />
         </div>
 
-        {steps.map((step, stepIdx) => (
+        {steps.map((step) => (
           <li key={step.name} className="relative">
             {step.status === "complete" ? (
               <div className="group">
