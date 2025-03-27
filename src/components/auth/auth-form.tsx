@@ -11,6 +11,7 @@ import { RoleSelectionForm } from "./role-selection-form";
 import { ArrowLeft } from "lucide-react";
 import apiClient from "@/api/axiosInterceptor";
 import { AuthResponse } from "@/types/auth";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -35,6 +36,7 @@ export function AuthForm() {
   const [userEmail, setUserEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const router = useRouter();
 
   const steps: AuthStep[] = [
     {
@@ -125,8 +127,7 @@ export function AuthForm() {
     console.log("Profile data:", data);
     try {
       const response = await apiClient.put("/users/profile", data);
-
-      setCurrentStep(3);
+      router.push("/home");
     } catch (error) {
       console.error("Login error:", error);
     }
