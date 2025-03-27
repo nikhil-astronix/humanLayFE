@@ -6,9 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { AuthSteps } from "./auth-steps";
 import type { AuthStep } from "./auth-steps";
-import { VerifyForm } from "./verify-form";
+import VerifyOTP from "./verify-form";
 import { RoleSelectionForm } from "./role-selection-form";
 import { ArrowLeft } from "lucide-react";
+import apiClient from "@/api/axiosInterceptor";
+import { AuthResponse } from "@/types/auth";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -32,27 +34,48 @@ export function AuthForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const [userEmail, setUserEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
   const steps: AuthStep[] = [
-    { 
-      id: 1, 
-      name: "Role", 
-      status: currentStep === 1 ? "current" : currentStep > 1 ? "complete" : "upcoming"
+    {
+      id: 1,
+      name: "Role",
+      status:
+        currentStep === 1
+          ? "current"
+          : currentStep > 1
+          ? "complete"
+          : "upcoming",
     },
-    { 
-      id: 2, 
-      name: "Account", 
-      status: currentStep === 2 ? "current" : currentStep > 2 ? "complete" : "upcoming"
+    {
+      id: 2,
+      name: "Account",
+      status:
+        currentStep === 2
+          ? "current"
+          : currentStep > 2
+          ? "complete"
+          : "upcoming",
     },
-    { 
-      id: 3, 
-      name: "Verify", 
-      status: currentStep === 3 ? "current" : currentStep > 3 ? "complete" : "upcoming"
+    {
+      id: 3,
+      name: "Verify",
+      status:
+        currentStep === 3
+          ? "current"
+          : currentStep > 3
+          ? "complete"
+          : "upcoming",
     },
-    { 
-      id: 4, 
-      name: "Profile", 
-      status: currentStep === 4 ? "current" : currentStep > 4 ? "complete" : "upcoming"
+    {
+      id: 4,
+      name: "Profile",
+      status:
+        currentStep === 4
+          ? "current"
+          : currentStep > 4
+          ? "complete"
+          : "upcoming",
     },
   ];
 
@@ -77,8 +100,19 @@ export function AuthForm() {
     setCurrentStep(2);
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     setUserEmail(data.email);
+    setUserPassword(data.password);
+    try {
+      const response = await apiClient.post<AuthResponse>("/users/send-otp", {
+        role: selectedRole,
+        ...data,
+      });
+      setUserEmail(data.email);
+      setCurrentStep(3);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
     setCurrentStep(3);
   };
 
@@ -87,26 +121,32 @@ export function AuthForm() {
     console.log("Resending verification email to:", userEmail);
   };
 
-  const onProfileSubmit = (data: ProfileData) => {
+  const onProfileSubmit = async (data: ProfileData) => {
     console.log("Profile data:", data);
-    // Handle profile submission
+    try {
+      const response = await apiClient.put("/users/profile", data);
+
+      setCurrentStep(3);
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
-  // Simulate verification completion
-  useEffect(() => {
-    if (currentStep === 3) {
-      const timer = setTimeout(() => {
-        setCurrentStep(4);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentStep]);
-
+  // // Simulate verification completion
+  // useEffect(() => {
+  //   if (currentStep === 3) {
+  //     const timer = setTimeout(() => {
+  //       setCurrentStep(4);
+  //     }, 5000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [currentStep]);
+  console.log("emailll", userEmail);
   return (
     <div className="mx-auto px-6 w-full max-w-4xl">
       <div className="bg-white rounded-lg shadow-lg p-8 min-h-[600px] flex flex-col">
         <AuthSteps steps={steps} />
-        
+
         <div className="flex-1 flex items-start justify-center">
           <div className="w-full space-y-6 mt-8">
             {currentStep === 1 ? (
@@ -114,15 +154,23 @@ export function AuthForm() {
             ) : currentStep === 2 ? (
               <div className="max-w-md mx-auto">
                 <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-900">Create your account</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Create your account
+                  </h2>
                   <p className="mt-2 text-sm text-gray-600">
                     Join thousands of founders accessing non-dilutive funding
                   </p>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-8 border border-gray-200 rounded-lg p-8">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-4 mt-8 border border-gray-200 rounded-lg p-8"
+                >
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Email address
                     </label>
                     <input
@@ -133,12 +181,17 @@ export function AuthForm() {
                       placeholder="sarah@example.com"
                     />
                     {errors.email && (
-                      <p className="mt-1 text-sm text-orange-600">{errors.email.message}</p>
+                      <p className="mt-1 text-sm text-orange-600">
+                        {errors.email.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Password
                     </label>
                     <input
@@ -148,7 +201,9 @@ export function AuthForm() {
                       className="mt-1 mb-4 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-600 focus:border-orange-600"
                     />
                     {errors.password && (
-                      <p className="mt-1 text-sm text-orange-600">{errors.password.message}</p>
+                      <p className="mt-1 text-sm text-orange-600">
+                        {errors.password.message}
+                      </p>
                     )}
                   </div>
 
@@ -169,36 +224,48 @@ export function AuthForm() {
                     </button>
                   </div>
                   <div className="text-center mt-6">
-                  <p className="text-sm text-gray-600">
-                    Already have an account?{" "}
-                    <a href="/login" className="font-medium text-orange-600 hover:text-orange-700">
-                      Log in
-                    </a>
-                  </p>
-                </div>
+                    <p className="text-sm text-gray-600">
+                      Already have an account?{" "}
+                      <a
+                        href="/login"
+                        className="font-medium text-orange-600 hover:text-orange-700"
+                      >
+                        Log in
+                      </a>
+                    </p>
+                  </div>
                 </form>
-
-                
               </div>
             ) : currentStep === 3 ? (
               <div className="max-w-md mx-auto border border-gray-200 rounded-lg p-8">
-                <VerifyForm 
-                  email={userEmail} 
-                  onResendClick={handleResendVerification}
+                <VerifyOTP
+                  email={userEmail}
+                  selectedRole={selectedRole}
+                  password={userPassword}
+                  setCurrentStep={setCurrentStep}
                 />
               </div>
             ) : currentStep === 4 ? (
               <div className="max-w-xl mx-auto ">
                 <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-900">Set Up Your Profile</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Set Up Your Profile
+                  </h2>
                   <p className="mt-2 text-sm text-gray-600">
-                    Help us match you with the best grants by telling us about your startup.
+                    Help us match you with the best grants by telling us about
+                    your startup.
                   </p>
                 </div>
 
-                <form onSubmit={handleProfileSubmit(onProfileSubmit)} className="space-y-4 mt-8 border border-gray-200 rounded-lg p-8">
+                <form
+                  onSubmit={handleProfileSubmit(onProfileSubmit)}
+                  className="space-y-4 mt-8 border border-gray-200 rounded-lg p-8"
+                >
                   <div>
-                    <label htmlFor="startupName" className="block text-sm font-medium text-gray-700">
+                    <label
+                      htmlFor="startupName"
+                      className="block text-sm font-medium text-gray-700"
+                    >
                       Startup Name
                     </label>
                     <input
@@ -208,13 +275,18 @@ export function AuthForm() {
                       className="mt-1 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-600 focus:border-orange-600"
                     />
                     {profileErrors.startupName && (
-                      <p className="mt-1 text-sm text-orange-600">{profileErrors.startupName.message}</p>
+                      <p className="mt-1 text-sm text-orange-600">
+                        {profileErrors.startupName.message}
+                      </p>
                     )}
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="industry"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Industry
                       </label>
                       <select
@@ -230,7 +302,10 @@ export function AuthForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="stage" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="stage"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Stage
                       </label>
                       <select
@@ -248,7 +323,10 @@ export function AuthForm() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="currentFunding" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="currentFunding"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Current Funding
                       </label>
                       <input
@@ -261,7 +339,10 @@ export function AuthForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="demographic" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="demographic"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Demographic
                       </label>
                       <select
@@ -279,7 +360,10 @@ export function AuthForm() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="fundingNeeds" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="fundingNeeds"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Funding Needs
                       </label>
                       <input
@@ -292,7 +376,10 @@ export function AuthForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="useOfFunds" className="block text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="useOfFunds"
+                        className="block text-sm font-medium text-gray-700"
+                      >
                         Use of Funds
                       </label>
                       <select
@@ -322,4 +409,4 @@ export function AuthForm() {
       </div>
     </div>
   );
-} 
+}
