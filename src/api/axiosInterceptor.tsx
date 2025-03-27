@@ -2,8 +2,8 @@ import axios from "axios";
 
 // Create an Axios instance
 const apiClient = axios.create({
-  baseURL: "http://127.0.0.1:8000",
-  // baseURL: "http://43.204.236.28:8000", // Replace with your actual API URL
+  // baseURL: "http://127.0.0.1:8000",
+  baseURL: "http://43.204.236.28:8000/", // Replace with your actual API URL
   headers: {
     "Content-Type": "application/json",
   },
