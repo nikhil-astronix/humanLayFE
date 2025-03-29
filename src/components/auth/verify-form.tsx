@@ -2,8 +2,7 @@
 
 import { Dispatch, SetStateAction, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import apiClient from "@/api/axiosInterceptor";
-import { AuthResponse } from "@/types/auth";
+import { sendOTP, verifyOTP } from "@/services/authService";
 
 export default function VerifyOTP({
   email,
@@ -16,7 +15,6 @@ export default function VerifyOTP({
   selectedRole: string;
   setCurrentStep: Dispatch<SetStateAction<number>>;
 }) {
-  const router = useRouter();
   const [screen, setScreen] = useState<"email" | "otp">("email");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<Array<HTMLInputElement | null>>(
@@ -31,7 +29,6 @@ export default function VerifyOTP({
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Move to the next input box if a digit is entered
     if (value !== "" && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
@@ -44,42 +41,37 @@ export default function VerifyOTP({
   };
 
   const handleVerify = async () => {
-    const enteredOtp = otp.join(""); // Combine OTP array into a string
+    const enteredOtp = otp.join("");
     if (enteredOtp.length < 6) {
       setError("Please enter a 6-digit OTP");
       return;
     }
     setError("");
     setMessage("Verifying...");
-    const res = await apiClient.post<AuthResponse>("/users/verify-otp", {
-      email,
-      otp: enteredOtp,
-      password,
-      role: selectedRole,
-    });
-    console.log("res", res.data);
-    if (res) {
-      localStorage.setItem("token", res.data.access_token); // Store token
+
+    try {
+      const res = await verifyOTP(email, enteredOtp, password, selectedRole);
+      localStorage.setItem("token", res.data.access_token);
       setCurrentStep(4);
-    } else {
+    } catch (error) {
       setError("Invalid OTP");
+    } finally {
       setMessage("");
     }
   };
 
   const handleResendOTP = async () => {
     setMessage("Resending OTP...");
-    await apiClient.post<AuthResponse>("/users/send-otp", {
-      email,
-      password,
-      role: selectedRole,
-    });
-    setMessage("OTP resent! Check your email.");
+    try {
+      await sendOTP(email, password, selectedRole);
+      setMessage("OTP resent! Check your email.");
+    } catch (error) {
+      setError("Failed to resend OTP");
+    }
   };
 
   return (
     <div className="text-center space-y-6">
-      {/* Email Confirmation Screen */}
       {screen === "email" && (
         <>
           <div className="mx-auto w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center">
@@ -99,18 +91,14 @@ export default function VerifyOTP({
             </svg>
           </div>
 
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold text-gray-900">
-              Check Your Email!
-            </h2>
-            <p className="text-sm text-gray-600">
-              {`We've sent a verification code to`}
-            </p>
-            <p className="text-sm font-medium text-gray-900">{email}</p>
-            <p className="text-sm text-gray-600">
-              Enter the code below to activate your account.
-            </p>
-          </div>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Check Your Email!
+          </h2>
+          <p className="text-sm text-gray-600">{`We've sent a verification code to`}</p>
+          <p className="text-sm font-medium text-gray-900">{email}</p>
+          <p className="text-sm text-gray-600">
+            Enter the code below to activate your account.
+          </p>
 
           <button
             onClick={() => setScreen("otp")}
@@ -128,26 +116,8 @@ export default function VerifyOTP({
         </>
       )}
 
-      {/* OTP Verification Screen */}
       {screen === "otp" && (
         <>
-          <div className="mx-auto w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-10 h-10 text-orange-600"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16 12H8m8 4H8m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-          </div>
-
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-gray-900">Enter OTP</h2>
             <p className="text-sm text-gray-600">
@@ -156,7 +126,6 @@ export default function VerifyOTP({
             <p className="text-sm font-medium text-gray-900">{email}</p>
           </div>
 
-          {/* OTP Boxes */}
           <div className="flex justify-center space-x-2">
             {otp.map((digit, index) => (
               <input

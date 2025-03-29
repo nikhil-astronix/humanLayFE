@@ -4,20 +4,17 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, LayoutGrid, Users } from "lucide-react";
 import { ButtonLoader } from "@/components/ui/loader";
+import { GrantData } from "@/types/grantsData";
 
 interface AddGrantFormProps {
-  onSubmit: (data: {
-    name: string;
-    amount: string;
-    applicationDeadline: string;
-  }) => void;
+  onSubmit: (data: GrantData) => void;
 }
 
 export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<GrantData>({
     name: "",
     amount: "",
     description: "",
@@ -36,14 +33,20 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       onSubmit({
         name: formData.name,
         amount: formData.amount,
         applicationDeadline: formData.applicationDeadline,
+        description: formData.description,
+        externalLink: formData.externalLink,
+        industry: formData.industry,
+        stage: formData.stage,
+        demographics: formData.demographics,
+        benefits: { ...formData.benefits },
       });
       setShowSuccess(true);
     } catch (error) {
@@ -60,26 +63,40 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
             <CheckCircle2 className="h-6 w-6 text-green-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Grant Added Successfully!</h2>
-          <p className="text-gray-600 mb-6">Your grant has been successfully added to the platform.</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Grant Added Successfully!
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Your grant has been successfully added to the platform.
+          </p>
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-sm font-medium text-gray-900 mb-4">Grant Summary</h3>
+            <h3 className="text-sm font-medium text-gray-900 mb-4">
+              Grant Summary
+            </h3>
             <dl className="divide-y divide-gray-200">
               <div className="py-2 flex justify-between">
                 <dt className="text-sm text-gray-500">Grant Name:</dt>
-                <dd className="text-sm font-medium text-gray-900">{formData.name}</dd>
+                <dd className="text-sm font-medium text-gray-900">
+                  {formData.name}
+                </dd>
               </div>
               <div className="py-2 flex justify-between">
                 <dt className="text-sm text-gray-500">Amount:</dt>
-                <dd className="text-sm font-medium text-gray-900">${formData.amount}</dd>
+                <dd className="text-sm font-medium text-gray-900">
+                  ${formData.amount}
+                </dd>
               </div>
               <div className="py-2 flex justify-between">
                 <dt className="text-sm text-gray-500">Deadline:</dt>
-                <dd className="text-sm font-medium text-gray-900">{new Date(formData.applicationDeadline).toLocaleDateString()}</dd>
+                <dd className="text-sm font-medium text-gray-900">
+                  {new Date(formData.applicationDeadline).toLocaleDateString()}
+                </dd>
               </div>
               <div className="py-2 flex justify-between">
                 <dt className="text-sm text-gray-500">Provider:</dt>
-                <dd className="text-sm font-medium text-gray-900">NIH Program Office</dd>
+                <dd className="text-sm font-medium text-gray-900">
+                  NIH Program Office
+                </dd>
               </div>
             </dl>
           </div>
@@ -123,7 +140,9 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               <LayoutGrid className="h-5 w-5 text-blue-600" />
             </div>
             <div className="text-left">
-              <p className="text-sm font-medium text-gray-500">Total Active Grants</p>
+              <p className="text-sm font-medium text-gray-500">
+                Total Active Grants
+              </p>
               <p className="text-2xl font-semibold text-gray-900">12</p>
             </div>
           </div>
@@ -132,7 +151,9 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               <Users className="h-5 w-5 text-purple-600" />
             </div>
             <div className="text-left">
-              <p className="text-sm font-medium text-gray-500">Total Applicants</p>
+              <p className="text-sm font-medium text-gray-500">
+                Total Applicants
+              </p>
               <p className="text-2xl font-semibold text-gray-900">156</p>
             </div>
           </div>
@@ -145,10 +166,15 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
     <form onSubmit={handleSubmit} className="space-y-8 max-w-[1200px] mx-auto">
       <div className="space-y-10">
         <div>
-          <h2 className="text-lg font-medium text-gray-900 mb-6">Basic Information</h2>
+          <h2 className="text-lg font-medium text-gray-900 mb-6">
+            Basic Information
+          </h2>
           <div className="grid grid-cols-1 gap-x-12 gap-y-8 sm:grid-cols-2">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Grant Name<span className="text-red-500">*</span>
               </label>
               <input
@@ -157,12 +183,17 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 placeholder="e.g., NIH AI Research Grant"
                 className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
               />
             </div>
             <div>
-              <label htmlFor="amount" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="amount"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Amount<span className="text-red-500">*</span>
               </label>
               <div className="mt-2 relative rounded-md shadow-sm">
@@ -175,7 +206,9 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                   placeholder="50,000"
                   className="block w-full pl-7 rounded-md border border-gray-500 p-2 text-gray-900 focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                   value={formData.amount}
-                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, amount: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -183,7 +216,10 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
           </div>
 
           <div className="mt-8">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
               Description<span className="text-red-500">*</span>
             </label>
             <textarea
@@ -192,14 +228,19 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               placeholder="Describe the grant and its objectives..."
               className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
               value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
               required
             />
           </div>
 
           <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-8 sm:grid-cols-2">
             <div>
-              <label htmlFor="deadline" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="deadline"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Application Deadline<span className="text-red-500">*</span>
               </label>
               <input
@@ -207,12 +248,20 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 id="deadline"
                 className="mt-2 block w-full text-gray-900 rounded-md border border-gray-500 p-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.applicationDeadline}
-                onChange={(e) => setFormData({ ...formData, applicationDeadline: e.target.value })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    applicationDeadline: e.target.value,
+                  })
+                }
                 required
               />
             </div>
             <div>
-              <label htmlFor="link" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="link"
+                className="block text-sm font-medium text-gray-700"
+              >
                 External Link
               </label>
               <input
@@ -221,24 +270,33 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 placeholder="https://"
                 className="mt-2 block w-full text-gray-900 rounded-md border border-gray-500 p-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.externalLink}
-                onChange={(e) => setFormData({ ...formData, externalLink: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, externalLink: e.target.value })
+                }
               />
             </div>
           </div>
         </div>
 
         <div>
-          <h2 className="text-lg font-medium text-gray-900 mb-6">Eligibility Criteria</h2>
+          <h2 className="text-lg font-medium text-gray-900 mb-6">
+            Eligibility Criteria
+          </h2>
           <div className="grid grid-cols-1 gap-x-12 gap-y-8 sm:grid-cols-3">
             <div>
-              <label htmlFor="industry" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="industry"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Industry<span className="text-red-500">*</span>
               </label>
               <select
                 id="industry"
                 className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.industry}
-                onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, industry: e.target.value })
+                }
                 required
               >
                 <option value="">Select Industries</option>
@@ -248,14 +306,19 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               </select>
             </div>
             <div>
-              <label htmlFor="stage" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="stage"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Stage<span className="text-red-500">*</span>
               </label>
               <select
                 id="stage"
                 className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.stage}
-                onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, stage: e.target.value })
+                }
                 required
               >
                 <option value="">Select Stage</option>
@@ -265,14 +328,19 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
               </select>
             </div>
             <div>
-              <label htmlFor="demographics" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="demographics"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Demographics
               </label>
               <select
                 id="demographics"
                 className="mt-2 block w-full rounded-md border border-gray-500 p-2 text-gray-900 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm"
                 value={formData.demographics}
-                onChange={(e) => setFormData({ ...formData, demographics: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, demographics: e.target.value })
+                }
               >
                 <option value="">Select Demographics</option>
                 <option value="women">Women Founders</option>
@@ -284,7 +352,9 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
         </div>
 
         <div>
-          <h2 className="text-lg font-medium text-gray-900 mb-6">Non-Financial Benefits</h2>
+          <h2 className="text-lg font-medium text-gray-900 mb-6">
+            Non-Financial Benefits
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             <div className="flex items-center">
               <input
@@ -295,11 +365,17 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    benefits: { ...formData.benefits, googleCloudCredits: e.target.checked },
+                    benefits: {
+                      ...formData.benefits,
+                      googleCloudCredits: e.target.checked,
+                    },
                   })
                 }
               />
-              <label htmlFor="googleCloud" className="ml-2 block text-sm text-gray-700">
+              <label
+                htmlFor="googleCloud"
+                className="ml-2 block text-sm text-gray-700"
+              >
                 Google Cloud Credits
               </label>
             </div>
@@ -312,7 +388,10 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    benefits: { ...formData.benefits, awsCredits: e.target.checked },
+                    benefits: {
+                      ...formData.benefits,
+                      awsCredits: e.target.checked,
+                    },
                   })
                 }
               />
@@ -329,11 +408,17 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    benefits: { ...formData.benefits, mentorshipProgram: e.target.checked },
+                    benefits: {
+                      ...formData.benefits,
+                      mentorshipProgram: e.target.checked,
+                    },
                   })
                 }
               />
-              <label htmlFor="mentorship" className="ml-2 block text-sm text-gray-700">
+              <label
+                htmlFor="mentorship"
+                className="ml-2 block text-sm text-gray-700"
+              >
                 Mentorship Program
               </label>
             </div>
@@ -367,4 +452,4 @@ export function AddGrantForm({ onSubmit }: AddGrantFormProps) {
       </div>
     </form>
   );
-} 
+}

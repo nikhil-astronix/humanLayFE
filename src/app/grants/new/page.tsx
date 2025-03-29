@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { AddGrantForm } from "@/components/grants/add-grant-form";
 import { GrantSuccess } from "@/components/grants/grant-success";
+import { grantService } from "@/services/grantService";
 
 interface GrantData {
   name: string;
@@ -16,9 +17,18 @@ export default function NewGrantPage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [grantData, setGrantData] = useState<GrantData | null>(null);
 
-  const handleGrantSubmit = (data: GrantData) => {
-    setGrantData(data);
-    setShowSuccess(true);
+  const handleGrantSubmit = async (data: GrantData) => {
+    try {
+      const response = await grantService.submitGrant(data);
+      if (response.success) {
+        setGrantData(data);
+        setShowSuccess(true);
+      } else {
+        console.error("Grant submission failed");
+      }
+    } catch (error) {
+      console.error("Error submitting grant:", error);
+    }
   };
 
   const handleAddAnother = () => {
@@ -40,13 +50,20 @@ export default function NewGrantPage() {
         />
         {showSuccess && grantData ? (
           <div className="mt-8">
-            <GrantSuccess grantData={grantData} onAddAnother={handleAddAnother} />
+            <GrantSuccess
+              grantData={grantData}
+              onAddAnother={handleAddAnother}
+            />
           </div>
         ) : (
           <div className="mt-8 bg-white rounded-lg shadow">
             <div className="px-10 py-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Add New Grant</h1>
-              <p className="text-gray-600 mb-8 border-b border-gray-200 pb-4">Fill in the details below to add a new grant to the platform.</p>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                Add New Grant
+              </h1>
+              <p className="text-gray-600 mb-8 border-b border-gray-200 pb-4">
+                Fill in the details below to add a new grant to the platform.
+              </p>
               <AddGrantForm onSubmit={handleGrantSubmit} />
             </div>
           </div>
@@ -54,4 +71,4 @@ export default function NewGrantPage() {
       </main>
     </div>
   );
-} 
+}
