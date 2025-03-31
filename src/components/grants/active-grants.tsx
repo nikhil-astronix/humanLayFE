@@ -5,7 +5,7 @@ import { ChevronDown, ChevronUp, Filter, PlusCircle, Mail, ExternalLink } from "
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { fadeInUp, staggerContainer, slideInFromLeft } from "@/lib/animations";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 const grants = [
   {
