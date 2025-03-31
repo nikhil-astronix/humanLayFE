@@ -110,7 +110,7 @@ export default function HomePage() {
                 <Suspense fallback={<LoadingCard />}>
                   <ActionCard
                     title="Explore Grant Matches"
-                    description="Discover grants matching your $50,000 R&D funding needs"
+                    description="Discover grants matching your &apos;50,000 R&D funding needs"
                     buttonText="View Your Matches"
                     icon={<Target className="h-6 w-6 text-white" />}
                     onClick={() => router.push('/home/opportunities')}

@@ -68,14 +68,20 @@ export function Navbar() {
   const isAuthenticated = useCallback(() => {
     if (isAuthPage) return false;
     
+    // Check if window is defined (client-side)
+    const hasLocalStorage = typeof window !== 'undefined';
+    
     // Check if current path starts with any protected route
     return protectedRoutes.some(route => 
       pathname?.startsWith(route) || 
-      localStorage.getItem('userEmail') !== null
+      (hasLocalStorage && localStorage.getItem('userEmail') !== null)
     );
-  }, [pathname, isAuthPage]);
+  }, [pathname, isAuthPage, protectedRoutes]);
 
   useEffect(() => {
+    // Check if window is defined (client-side)
+    if (typeof window === 'undefined') return;
+
     // Get user data from localStorage
     const email = localStorage.getItem('userEmail');
     const name = localStorage.getItem('userName');
@@ -91,6 +97,9 @@ export function Navbar() {
   }, [pathname, router, isAuthenticated]);
 
   const handleLogout = () => {
+    // Check if window is defined (client-side)
+    if (typeof window === 'undefined') return;
+
     // Clear user data from localStorage
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userName');

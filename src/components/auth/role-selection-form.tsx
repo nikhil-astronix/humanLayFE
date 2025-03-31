@@ -55,7 +55,7 @@ export function RoleSelectionForm({ onSubmit }: RoleSelectionFormProps) {
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-900">Choose Your Role</h2>
         <p className="mt-2 text-sm text-gray-600">
-          Select how you'd like to participate in the Human
+          Select how you&apos;d like to participate in the Human
         </p>
       </div>
 
