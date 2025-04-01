@@ -1,7 +1,6 @@
 "use client"; // Ensure it's a Client Component
 
 import { Dispatch, SetStateAction, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { sendOTP, verifyOTP } from "@/services/authService";
 
 export default function VerifyOTP({
@@ -51,9 +50,10 @@ export default function VerifyOTP({
 
     try {
       const res = await verifyOTP(email, enteredOtp, password, selectedRole);
-      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("token", res.access_token);
       setCurrentStep(4);
     } catch (error) {
+      console.error("Verification error:", error);
       setError("Invalid OTP");
     } finally {
       setMessage("");
@@ -66,6 +66,7 @@ export default function VerifyOTP({
       await sendOTP(email, password, selectedRole);
       setMessage("OTP resent! Check your email.");
     } catch (error) {
+      console.error("Resend OTP error:", error);
       setError("Failed to resend OTP");
     }
   };
@@ -130,7 +131,11 @@ export default function VerifyOTP({
             {otp.map((digit, index) => (
               <input
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
+                ref={(el) => {
+                  if (el) {
+                    inputRefs.current[index] = el; // Assigning the input to the array
+                  }
+                }}
                 type="text"
                 maxLength={1}
                 value={digit}

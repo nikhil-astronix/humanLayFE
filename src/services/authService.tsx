@@ -5,8 +5,8 @@ export const sendOTP = async (
   email: string,
   password: string,
   role: string
-) => {
-  return await apiClient.post<AuthResponse>("/users/send-otp", {
+): Promise<void> => {
+  await apiClient.post<AuthResponse>("/users/send-otp", {
     email,
     password,
     role,
@@ -18,13 +18,14 @@ export const verifyOTP = async (
   otp: string,
   password: string,
   role: string
-) => {
-  return await apiClient.post<AuthResponse>("/users/verify-otp", {
+): Promise<AuthResponse> => {
+  const response = await apiClient.post<AuthResponse>("/users/verify-otp", {
     email,
     otp,
     password,
     role,
   });
+  return response.data;
 };
 
 export const loginIn = async (
@@ -37,7 +38,8 @@ export const loginIn = async (
       password,
     });
     return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Failed to sign in");
+  } catch (error: unknown) {
+    console.log("Login error:", error);
+    throw new Error("An unexpected error occurred");
   }
 };

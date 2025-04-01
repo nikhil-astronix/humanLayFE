@@ -5,13 +5,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { AddGrantForm } from "@/components/grants/add-grant-form";
 import { GrantSuccess } from "@/components/grants/grant-success";
-import { grantService } from "@/services/grantService";
-
-interface GrantData {
-  name: string;
-  amount: string;
-  applicationDeadline: string;
-}
+import { submitGrant } from "@/services/grantService";
+import { GrantData } from "@/types/grantsData";
 
 export default function NewGrantPage() {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -19,7 +14,7 @@ export default function NewGrantPage() {
 
   const handleGrantSubmit = async (data: GrantData) => {
     try {
-      const response = await grantService.submitGrant(data);
+      const response = await submitGrant(data);
       if (response.success) {
         setGrantData(data);
         setShowSuccess(true);
