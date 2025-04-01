@@ -1,8 +1,9 @@
-const ProfileCard: React.FC = () => {
+import Image from "next/image";
+export default function ProfileCard() {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
       <div className="flex items-center space-x-4">
-        <img
+        <Image
           src="/sarah-chen.png"
           className="w-16 h-16 rounded-full"
           alt="Sarah Chen"
@@ -22,4 +23,4 @@ const ProfileCard: React.FC = () => {
       </button>
     </div>
   );
-};
+}

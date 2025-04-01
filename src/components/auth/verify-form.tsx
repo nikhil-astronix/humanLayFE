@@ -50,7 +50,7 @@ export default function VerifyOTP({
 
     try {
       const res = await verifyOTP(email, enteredOtp, password, selectedRole);
-      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("token", res.access_token);
       setCurrentStep(4);
     } catch (error) {
       console.error("Verification error:", error);
@@ -131,7 +131,11 @@ export default function VerifyOTP({
             {otp.map((digit, index) => (
               <input
                 key={index}
-                ref={(el) => (inputRefs.current[index] = el)}
+                ref={(el) => {
+                  if (el) {
+                    inputRefs.current[index] = el; // Assigning the input to the array
+                  }
+                }}
                 type="text"
                 maxLength={1}
                 value={digit}

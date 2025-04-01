@@ -8,8 +8,8 @@ export interface GrantData {
   stage: string;
   demographics: string;
   benefits: {
-    googleCloudCredits: false;
-    awsCredits: false;
-    mentorshipProgram: false;
+    googleCloudCredits: boolean;
+    awsCredits: boolean;
+    mentorshipProgram: boolean;
   };
 }

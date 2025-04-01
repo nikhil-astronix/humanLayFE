@@ -1,3 +1,4 @@
+import Image from "next/image";
 export default function AwardeeConnect() {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-6">
@@ -5,7 +6,7 @@ export default function AwardeeConnect() {
         Connect with Awardees
       </h2>
       <div className="mt-4 flex flex-col items-center">
-        <img
+        <Image
           src="/emily-brown.png"
           className="w-16 h-16 rounded-full"
           alt="Emily Brown"

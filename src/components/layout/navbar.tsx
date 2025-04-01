@@ -2,45 +2,53 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Home, UserCircle, LogOut, Award, BookOpen, Users } from "lucide-react";
+import {
+  User,
+  Home,
+  UserCircle,
+  LogOut,
+  Award,
+  BookOpen,
+  Users,
+} from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/ui/Logo";
 
 const navVariants = {
   hidden: { y: -20, opacity: 0 },
-  visible: { 
-    y: 0, 
+  visible: {
+    y: 0,
     opacity: 1,
     transition: {
       duration: 0.5,
-      ease: "easeOut"
-    }
-  }
+      ease: "easeOut",
+    },
+  },
 };
 
 const linkVariants = {
   initial: { opacity: 0, y: -10 },
-  animate: { 
-    opacity: 1, 
+  animate: {
+    opacity: 1,
     y: 0,
     transition: {
-      duration: 0.2
-    }
-  }
+      duration: 0.2,
+    },
+  },
 };
 
 const dropdownVariants = {
   hidden: { opacity: 0, y: -10, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
     transition: {
       duration: 0.2,
-      ease: "easeOut"
-    }
+      ease: "easeOut",
+    },
   },
   exit: {
     opacity: 0,
@@ -48,9 +56,9 @@ const dropdownVariants = {
     scale: 0.95,
     transition: {
       duration: 0.2,
-      ease: "easeIn"
-    }
-  }
+      ease: "easeIn",
+    },
+  },
 };
 
 export function Navbar() {
@@ -61,69 +69,75 @@ export function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
-  
+
   // Updated authentication check logic
-  const isAuthPage = pathname?.startsWith('/auth/');
-  const protectedRoutes = ['/home', '/grants', '/resources', '/mentorship'];
+  const isAuthPage = pathname?.startsWith("/auth/");
+  const protectedRoutes = useMemo(
+    () => ["/home", "/grants", "/resources", "/mentorship"],
+    []
+  );
+
   const isAuthenticated = useCallback(() => {
     if (isAuthPage) return false;
-    
-    // Check if window is defined (client-side)
-    const hasLocalStorage = typeof window !== 'undefined';
-    
-    // Check if current path starts with any protected route
-    return protectedRoutes.some(route => 
-      pathname?.startsWith(route) || 
-      (hasLocalStorage && localStorage.getItem('userEmail') !== null)
+
+    const hasLocalStorage = typeof window !== "undefined";
+
+    return protectedRoutes.some(
+      (route) =>
+        pathname?.startsWith(route) ||
+        (hasLocalStorage && localStorage.getItem("userEmail") !== null)
     );
   }, [pathname, isAuthPage, protectedRoutes]);
 
   useEffect(() => {
     // Check if window is defined (client-side)
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Get user data from localStorage
-    const email = localStorage.getItem('userEmail');
-    const name = localStorage.getItem('userName');
-    
+    const email = localStorage.getItem("userEmail");
+    const name = localStorage.getItem("userName");
+
     // If no auth data but on protected route, redirect to login
     if (!email && isAuthenticated()) {
-      router.push('/auth/login');
+      router.push("/auth/login");
       return;
     }
-    
+
     if (email) setUserEmail(email);
     if (name) setUserName(name);
   }, [pathname, router, isAuthenticated]);
 
   const handleLogout = () => {
     // Check if window is defined (client-side)
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Clear user data from localStorage
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userDesignation');
-    router.push('/');
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userDesignation");
+    router.push("/");
   };
 
   // Add click outside handler
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <>
-      <motion.nav 
+      <motion.nav
         className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm"
         initial="hidden"
         animate="visible"
@@ -132,15 +146,12 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16">
             <div className="flex items-center space-x-8">
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <Link
-                  href="/"
-                  className="flex items-center"
-                >
+                <Link href="/" className="flex items-center">
                   <Logo />
                 </Link>
               </motion.div>
@@ -160,9 +171,9 @@ export function Navbar() {
                         <Link
                           href="/home"
                           className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
-                            pathname === '/home'
-                              ? 'border-orange-600 text-gray-900'
-                              : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600'
+                            pathname === "/home"
+                              ? "border-orange-600 text-gray-900"
+                              : "border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600"
                           }`}
                         >
                           <Home className="w-4 h-4 mr-1" />
@@ -178,9 +189,9 @@ export function Navbar() {
                         <Link
                           href="/grants"
                           className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
-                            pathname === '/grants'
-                              ? 'border-orange-600 text-gray-900'
-                              : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600'
+                            pathname === "/grants"
+                              ? "border-orange-600 text-gray-900"
+                              : "border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600"
                           }`}
                         >
                           <Award className="w-4 h-4 mr-1" />
@@ -197,9 +208,9 @@ export function Navbar() {
                         <Link
                           href="/resources"
                           className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
-                            pathname === '/resources'
-                              ? 'border-orange-600 text-gray-900'
-                              : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600'
+                            pathname === "/resources"
+                              ? "border-orange-600 text-gray-900"
+                              : "border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600"
                           }`}
                         >
                           <BookOpen className="w-4 h-4 mr-1" />
@@ -216,9 +227,9 @@ export function Navbar() {
                         <Link
                           href="/mentorship"
                           className={`inline-flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${
-                            pathname === '/mentorship'
-                              ? 'border-orange-600 text-gray-900'
-                              : 'border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600'
+                            pathname === "/mentorship"
+                              ? "border-orange-600 text-gray-900"
+                              : "border-transparent text-gray-700 hover:text-gray-900 hover:border-orange-600"
                           }`}
                         >
                           <Users className="w-4 h-4 mr-1" />
@@ -294,7 +305,9 @@ export function Navbar() {
                         className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-gray-200 ring-opacity-5"
                       >
                         <div className="px-4 py-2 border-b border-gray-100">
-                          <p className="text-sm font-medium text-gray-900">{userName}</p>
+                          <p className="text-sm font-medium text-gray-900">
+                            {userName}
+                          </p>
                           <p className="text-xs text-gray-500">{userEmail}</p>
                         </div>
                         <Link
