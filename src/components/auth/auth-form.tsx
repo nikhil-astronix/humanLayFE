@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -115,7 +114,7 @@ export function AuthForm() {
     setUserEmail(data.email);
     setUserPassword(data.password);
     try {
-      const response = await apiClient.post<AuthResponse>("/users/send-otp", {
+      await apiClient.post<AuthResponse>("/users/send-otp", {
         role: selectedRole,
         ...data,
       });
@@ -127,31 +126,16 @@ export function AuthForm() {
     setCurrentStep(3);
   };
 
-  const handleResendVerification = () => {
-    // Handle resend verification logic here
-    console.log("Resending verification email to:", userEmail);
-  };
-
   const onProfileSubmit = async (data: ProfileData) => {
     console.log("Profile data:", data);
     try {
-      const response = await apiClient.put("/users/profile", data);
+      await apiClient.put("/users/profile", data);
       router.push("/home");
     } catch (error) {
       console.error("Login error:", error);
     }
   };
 
-  // // Simulate verification completion
-  // useEffect(() => {
-  //   if (currentStep === 3) {
-  //     const timer = setTimeout(() => {
-  //       setCurrentStep(4);
-  //     }, 5000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [currentStep]);
-  console.log("emailll", userEmail);
   return (
     <div className="mx-auto px-6 w-full max-w-4xl">
       <div className="bg-white rounded-lg shadow-lg p-8 min-h-[600px] flex flex-col">

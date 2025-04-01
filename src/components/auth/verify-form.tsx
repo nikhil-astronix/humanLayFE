@@ -1,7 +1,6 @@
 "use client"; // Ensure it's a Client Component
 
 import { Dispatch, SetStateAction, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { sendOTP, verifyOTP } from "@/services/authService";
 
 export default function VerifyOTP({
@@ -54,6 +53,7 @@ export default function VerifyOTP({
       localStorage.setItem("token", res.data.access_token);
       setCurrentStep(4);
     } catch (error) {
+      console.error("Verification error:", error);
       setError("Invalid OTP");
     } finally {
       setMessage("");
@@ -66,6 +66,7 @@ export default function VerifyOTP({
       await sendOTP(email, password, selectedRole);
       setMessage("OTP resent! Check your email.");
     } catch (error) {
+      console.error("Resend OTP error:", error);
       setError("Failed to resend OTP");
     }
   };
