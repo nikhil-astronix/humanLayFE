@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Target, Lightbulb } from "lucide-react";
+import { Target, Lightbulb, MapPin, Building2, TrendingUp, FileText, CreditCard } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { useRouter } from "next/navigation";
@@ -72,6 +72,19 @@ export default function HomePage() {
     if (designation) setUserDesignation(designation);
   }, []);
 
+  const recommendedResources = [
+    {
+      name: "Clerky",
+      description: "Legal Services for Early-Stage",
+      icon: <FileText className="h-6 w-6 text-orange-600" />
+    },
+    {
+      name: "Brex",
+      description: "Banking Services",
+      icon: <CreditCard className="h-6 w-6 text-orange-600" />
+    }
+  ];
+
   return (
     <>
       <Navbar />
@@ -139,6 +152,27 @@ export default function HomePage() {
                 <Suspense fallback={<div className="h-24 bg-gray-100 animate-pulse rounded"></div>}>
                   <StatsCard value="24/7" label="Support Access" />
                 </Suspense>
+              </div>
+
+              {/* Recommended Resources section */}
+              <div className="bg-white rounded-lg p-6 shadow-sm mt-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-gray-900">Recommended Resources</h2>
+                  <a href="#" className="text-sm text-orange-600 hover:text-orange-700">View All</a>
+                </div>
+                <div className="space-y-4">
+                  {recommendedResources.map((resource, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg">
+                      <div className="flex-shrink-0">
+                        {resource.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-gray-900">{resource.name}</h3>
+                        <p className="text-sm text-gray-500">{resource.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </Suspense>
