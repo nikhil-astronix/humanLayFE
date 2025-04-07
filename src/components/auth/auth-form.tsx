@@ -12,6 +12,7 @@ import apiClient from "@/api/axiosInterceptor";
 import { AuthResponse } from "@/types/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ButtonLoader } from "@/components/ui/loader";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -25,6 +26,13 @@ const formSchema = z.object({
       /[!@#$%^&*(),.?":{}|<>]/,
       "Password must contain at least one special character"
     ),
+});
+
+const providerFormSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string().min(8, "Password must be at least 8 characters"),
+  organizationType: z.string().min(1, "Organization type is required"),
 });
 
 const profileSchema = z.object({
@@ -41,11 +49,13 @@ type FormData = z.infer<typeof formSchema>;
 type ProfileData = z.infer<typeof profileSchema>;
 
 export function AuthForm() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [userEmail, setUserEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const steps: AuthStep[] = [
     {
@@ -99,6 +109,14 @@ export function AuthForm() {
   });
 
   const {
+    register: registerProvider,
+    handleSubmit: handleProviderSubmit,
+    formState: { errors: providerErrors },
+  } = useForm<z.infer<typeof providerFormSchema>>({
+    resolver: zodResolver(providerFormSchema),
+  });
+
+  const {
     register: registerProfile,
     handleSubmit: handleProfileSubmit,
     formState: { errors: profileErrors },
@@ -127,6 +145,14 @@ export function AuthForm() {
     setCurrentStep(3);
   };
 
+  const onProviderSubmit = (data: z.infer<typeof providerFormSchema>) => {
+    if (data.password !== data.confirmPassword) {
+      return;
+    }
+    setUserEmail(data.email);
+    setCurrentStep(3);
+  };
+
   const onProfileSubmit = async (data: ProfileData) => {
     console.log("Profile data:", data);
     try {
@@ -147,89 +173,214 @@ export function AuthForm() {
             {currentStep === 1 ? (
               <RoleSelectionForm onSubmit={handleRoleSelect} />
             ) : currentStep === 2 ? (
-              <div className="max-w-md mx-auto">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Create your account
-                  </h2>
-                  <p className="mt-2 text-sm text-gray-600">
-                    Join thousands of founders accessing non-dilutive funding
+              <div className="max-w-md mx-auto ">
+                {selectedRole === "grant-provider" ? (
+                  // Grant Provider Form
+                  <div className="shadow-lg rounded-lg p-8 border border-gray-200">
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-gray-900">
+                        Create Grant Provider Account
+                      </h2>
+                      <p className="mt-2 text-sm text-gray-600">
+                        Join our platform to manage grant applications and
+                        connect with founders
+                      </p>
+                    </div>
+
+                    <form
+                      onSubmit={handleProviderSubmit(onProviderSubmit)}
+                      className="mt-8 space-y-6"
+                    >
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Email Address
+                        </label>
+                        <input
+                          {...registerProvider("email")}
+                          type="email"
+                          placeholder="name@organization.com"
+                          className="mt-1 block w-full text-gray-900 rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500 sm:text-sm"
+                        />
+                        {providerErrors.email && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {providerErrors.email.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="password"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Password
+                        </label>
+                        <input
+                          {...registerProvider("password")}
+                          type="password"
+                          className="mt-1 block w-full text-gray-900 rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500 sm:text-sm"
+                        />
+                        {providerErrors.password && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {providerErrors.password.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="confirmPassword"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Confirm Password
+                        </label>
+                        <input
+                          {...registerProvider("confirmPassword")}
+                          type="password"
+                          className="mt-1 block w-full text-gray-900 rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500 sm:text-sm"
+                        />
+                        {providerErrors.confirmPassword && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {providerErrors.confirmPassword.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="organizationType"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Organization Type
+                        </label>
+                        <select
+                          {...registerProvider("organizationType")}
+                          className="mt-1 block w-full text-gray-900 rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500 sm:text-sm"
+                        >
+                          <option value="">Select organization type</option>
+                          <option value="government">Government Agency</option>
+                          <option value="non-profit">
+                            Non-Profit Organization
+                          </option>
+                          <option value="corporation">Corporation</option>
+                          <option value="foundation">Foundation</option>
+                          <option value="academic">Academic Institution</option>
+                        </select>
+                        {providerErrors.organizationType && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {providerErrors.organizationType.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex gap-4 mt-4 pt-4">
+                        <button
+                          type="button"
+                          onClick={() => setCurrentStep(1)}
+                          className="w-1/3 flex justify-center items-center py-2 px-4 border border-orange-600 rounded-md shadow-sm text-sm font-medium text-orange-600 bg-white hover:bg-orange-600 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
+                        >
+                          <ArrowLeft className="w-4 h-4 mr-2" />
+                          Back
+                        </button>
+                        <button
+                          type="submit"
+                          className="w-2/3 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
+                        >
+                          Continue
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                ) : (
+                  // Grant Seeker Form (Original Form)
+                  <div className="shadow-lg rounded-lg p-8 border border-gray-200">
+                    <div className="text-center">
+                      <h2 className="text-2xl font-bold text-gray-900">
+                        Create your account
+                      </h2>
+                      <p className="mt-2 text-sm text-gray-600">
+                        Join thousands of founders accessing non-dilutive
+                        funding
+                      </p>
+                    </div>
+
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      className="mt-8 space-y-6"
+                    >
+                      <div>
+                        <label
+                          htmlFor="email"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Email Address
+                        </label>
+                        <input
+                          {...register("email")}
+                          type="email"
+                          className="mt-1 block w-full text-gray-900 rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500 sm:text-sm"
+                        />
+                        {errors.email && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.email.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="password"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          Password
+                        </label>
+                        <input
+                          {...register("password")}
+                          type="password"
+                          id="password"
+                          className="mt-1 mb-4 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-600 focus:border-orange-600"
+                        />
+                        {errors.password && (
+                          <p className="mt-1 text-sm text-orange-600">
+                            {errors.password.message}
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="flex gap-4 mt-4 pt-4">
+                        <button
+                          type="button"
+                          onClick={() => setCurrentStep(1)}
+                          className="w-1/3 flex justify-center items-center py-2 px-4 border border-orange-600 rounded-md shadow-sm text-sm font-medium text-orange-600 bg-white hover:bg-orange-600 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
+                        >
+                          <ArrowLeft className="w-4 h-4 mr-2" />
+                          Back
+                        </button>
+                        <button
+                          type="submit"
+                          className="w-2/3 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
+                        >
+                          Create Account
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                <div className="text-center mt-6">
+                  <p className="text-sm text-gray-600">
+                    Already have an account?{" "}
+                    <a
+                      href="/auth/login"
+                      className="font-medium text-orange-600 hover:text-orange-700"
+                    >
+                      Log in
+                    </a>
                   </p>
                 </div>
-
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-4 mt-8 border border-gray-200 rounded-lg p-8"
-                >
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Email address
-                    </label>
-                    <input
-                      {...register("email")}
-                      type="email"
-                      id="email"
-                      className="mt-1 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-600 focus:border-orange-600"
-                      placeholder="sarah@example.com"
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-orange-600">
-                        {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Password
-                    </label>
-                    <input
-                      {...register("password")}
-                      type="password"
-                      id="password"
-                      className="mt-1 mb-4 block w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-600 focus:border-orange-600"
-                    />
-                    {errors.password && (
-                      <p className="mt-1 text-sm text-orange-600">
-                        {errors.password.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex gap-4 mt-4 pt-4">
-                    <button
-                      type="button"
-                      onClick={() => setCurrentStep(1)}
-                      className="w-1/3 flex justify-center items-center py-2 px-4 border border-orange-600 rounded-md shadow-sm text-sm font-medium text-orange-600 bg-white hover:bg-orange-600 hover:text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
-                    >
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="w-2/3 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
-                    >
-                      Create Account
-                    </button>
-                  </div>
-                  <div className="text-center mt-6">
-                    <p className="text-sm text-gray-600">
-                      Already have an account?{" "}
-                      <a
-                        href="/login"
-                        className="font-medium text-orange-600 hover:text-orange-700"
-                      >
-                        Log in
-                      </a>
-                    </p>
-                  </div>
-                </form>
               </div>
             ) : currentStep === 3 ? (
               <div className="max-w-md mx-auto border border-gray-200 rounded-lg p-8">
@@ -241,7 +392,7 @@ export function AuthForm() {
                 />
               </div>
             ) : currentStep === 4 ? (
-              <div className="max-w-xl mx-auto ">
+              <div className="max-w-xl mx-auto border border-gray-200 rounded-lg p-8 shadow-lg">
                 <div className="text-center">
                   <h2 className="text-2xl font-bold text-gray-900">
                     Set Up Your Profile
@@ -254,7 +405,7 @@ export function AuthForm() {
 
                 <form
                   onSubmit={handleProfileSubmit(onProfileSubmit)}
-                  className="space-y-4 mt-8 border border-gray-200 rounded-lg p-8"
+                  className="space-y-4 mt-8"
                 >
                   <div>
                     <label
@@ -392,9 +543,17 @@ export function AuthForm() {
 
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
+                    disabled={isSubmitting}
+                    className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Complete Setup
+                    {isSubmitting ? (
+                      <>
+                        <ButtonLoader />
+                        <span className="ml-2">Setting up...</span>
+                      </>
+                    ) : (
+                      "Complete Setup"
+                    )}
                   </button>
                 </form>
               </div>
