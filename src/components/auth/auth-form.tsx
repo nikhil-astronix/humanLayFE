@@ -54,7 +54,6 @@ export function AuthForm() {
   const [userEmail, setUserEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const steps: AuthStep[] = [
