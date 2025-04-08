@@ -379,7 +379,7 @@ export default function GrantSeekerDashboard() {
                     </div>
                     <div className="mt-4 flex justify-end">
                       <button
-                        onClick={() => router.push('/home/application-progress')}
+                        onClick={() => router.push('/home/progress')}
                         className="px-4 py-2 text-sm font-medium text-orange-600 border border-orange-600 rounded-md hover:bg-orange-50"
                       >
                         View Details

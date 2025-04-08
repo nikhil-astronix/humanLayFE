@@ -66,8 +66,8 @@ export default function HomePage() {
   const [userDesignation, setUserDesignation] = useState<string>("");
 
   useEffect(() => {
-    const name = localStorage.getItem("userName");
-    const designation = localStorage.getItem("userDesignation");
+    const name = localStorage.getItem('userName');
+    const designation = localStorage.getItem('userDesignation');
     if (name) setUserName(name);
     if (designation) setUserDesignation(designation);
   }, []);
@@ -90,48 +90,51 @@ export default function HomePage() {
       <Navbar />
       <main className="min-h-screen bg-gray-50 px-4 py-8">
         <div className="max-w-6xl mx-auto">
-          <Suspense
-            fallback={
-              <div className="h-8 bg-gray-100 animate-pulse rounded mb-4"></div>
-            }
-          >
+          <Suspense fallback={<div className="h-8 bg-gray-100 animate-pulse rounded mb-4"></div>}>
             <motion.div
               initial="initial"
               animate="animate"
               variants={{
                 animate: {
                   transition: {
-                    staggerChildren: 0.1,
-                  },
-                },
+                    staggerChildren: 0.1
+                  }
+                }
               }}
             >
               <motion.div variants={fadeInUp} className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                  Welcome {userName}
-                </h1>
-                <p className="text-lg text-gray-600 mb-4">
-                  {userDesignation} Founder of ai innovate
-                </p>
+                <h1 className="text-3xl font-bold text-gray-900 mb-1">Welcome {userName}</h1>
+                <p className="text-lg text-gray-600 mb-4">{userDesignation} Founder of ai innovate</p>
                 <div className="flex gap-2 justify-center">
                   <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-sm">Technology</span>
                   <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-sm">Early-Stage</span>
                   <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-800 text-sm">Woman-Owned</span>
                 </div>
+                {/* <motion.div
+                  variants={fadeInUp}
+                  className="mt-4 p-4 rounded-lg bg-emerald-100 text-emerald-800 inline-block"
+                >
+                  <p className="font-medium">Your profile is all set!</p>
+                  <p className="text-sm">You're ready to explore personalized grant opportunities</p>
+<<<<<<< Updated upstream
+                </motion.div>
+=======
+                </motion.div> */}
+>>>>>>> Stashed changes
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-6 mb-8">
                 <Suspense fallback={<LoadingCard />}>
                   <ActionCard
                     title="Explore Grant Matches"
-                    description="Discover grants matching your '50,000 R&D funding needs"
+                    description="Discover grants matching your &apos;50,000 R&D funding needs"
                     buttonText="View Your Matches"
                     icon={<Target className="h-6 w-6 text-white" />}
-                    onClick={() => router.push("/home/opportunities")}
+                    onClick={() => router.push('/home/opportunities')}
                     className="[&_.icon-bg]:bg-[#E84E32] [&_button]:bg-[#E84E32] [&_button:hover]:bg-[#d64428]"
                   />
                 </Suspense>
-                <Suspense fallback={<LoadingCard />}>
+                <Suspense fallback={<LoadingCard />} >
                   <ActionCard
                     title="Access Resources"
                     description="Get Google Cloud Credits and other startup resources"
@@ -165,25 +168,13 @@ export default function HomePage() {
               </div>
 
               <div className="grid grid-cols-3 gap-6">
-                <Suspense
-                  fallback={
-                    <div className="h-24 bg-gray-100 animate-pulse rounded"></div>
-                  }
-                >
+                <Suspense fallback={<div className="h-24 bg-gray-100 animate-pulse rounded"></div>}>
                   <StatsCard value="15+" label="Grant Matches" />
                 </Suspense>
-                <Suspense
-                  fallback={
-                    <div className="h-24 bg-gray-100 animate-pulse rounded"></div>
-                  }
-                >
+                <Suspense fallback={<div className="h-24 bg-gray-100 animate-pulse rounded"></div>}>
                   <StatsCard value="$100K" label="Available Funding" />
                 </Suspense>
-                <Suspense
-                  fallback={
-                    <div className="h-24 bg-gray-100 animate-pulse rounded"></div>
-                  }
-                >
+                <Suspense fallback={<div className="h-24 bg-gray-100 animate-pulse rounded"></div>}>
                   <StatsCard value="24/7" label="Support Access" />
                 </Suspense>
               </div>
@@ -214,4 +205,4 @@ export default function HomePage() {
       </main>
     </>
   );
-}
+} 

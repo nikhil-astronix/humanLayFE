@@ -1,9 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageSquare, ArrowRight, Calendar, Clock, Bookmark, TrendingUp, Send, Eye } from "lucide-react";
+import { MessageSquare, ArrowRight, Calendar, Clock, Bookmark, TrendingUp, Send } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
-import { useRouter } from "next/navigation";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -32,7 +31,6 @@ const GrantCard = ({
   variant = "trending"
 }: GrantCardProps) => {
   const isEnding = variant === "ending";
-  const router = useRouter();
   
   return (
     <motion.div
@@ -75,23 +73,21 @@ const GrantCard = ({
       <div className="mt-auto flex flex-col gap-2">
         {!openingDate && (
           <>
-            {/* <button className={`w-full py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors ${
+            <button className={`w-full py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors ${
               isEnding 
                 ? "border border-red-200 text-red-600 hover:bg-red-50"
                 : "border border-indigo-200 text-indigo-600 hover:bg-indigo-50"
             }`}>
               <MessageSquare className="w-4 h-4" />
               Message Mentor
-            </button> */}
-            <button 
-              onClick={() => router.push('/home/grant-details')}
-              className={`w-full py-2 px-4 text-white rounded-lg flex items-center justify-center gap-2 transition-colors ${
+            </button>
+            <button className={`w-full py-2 px-4 text-white rounded-lg flex items-center justify-center gap-2 transition-colors ${
               isEnding
                 ? "bg-red-600 hover:bg-red-700"
                 : "bg-[#6366F1] hover:bg-[#5558E3]"
             }`}>
-              <Eye className="w-4 h-4" />
-              View Details
+              <Send className="w-4 h-4" />
+              Apply Now
             </button>
           </>
         )}
