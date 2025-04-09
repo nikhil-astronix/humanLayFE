@@ -69,6 +69,7 @@ export function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string>("");
 
   // Updated authentication check logic
   const isAuthPage = pathname?.startsWith("/auth/");
@@ -96,6 +97,8 @@ export function Navbar() {
     // Get user data from localStorage
     const email = localStorage.getItem("userEmail");
     const name = localStorage.getItem("userName");
+    const role = localStorage.getItem("role")
+    if(role) setUserRole(role)
 
     // If no auth data but on protected route, redirect to login
     if (!email && isAuthenticated()) {
@@ -180,6 +183,7 @@ export function Navbar() {
                           Home
                         </Link>
                       </motion.div>
+                      {userRole !== "grant_seeker"&&
                       <motion.div
                         initial="initial"
                         animate="animate"
@@ -198,6 +202,7 @@ export function Navbar() {
                           Grants
                         </Link>
                       </motion.div>
+}
                       <motion.div
                         initial="initial"
                         animate="animate"

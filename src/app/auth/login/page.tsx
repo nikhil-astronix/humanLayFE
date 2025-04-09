@@ -7,6 +7,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { loginIn } from "@/services/authService"; // Import the service
+import { getUserData } from '@/services/userProfileService';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -34,7 +35,9 @@ export default function LoginPage() {
       localStorage.setItem("token", response.access_token);
       localStorage.setItem("userEmail", formData.email);
       localStorage.setItem("userName", formData.email.split("@")[0]);
-
+      const profileresponse = await getUserData();
+      const role = profileresponse?.data?.role ?? "";
+      localStorage.setItem("role", role);
       router.push("/home"); // Redirect on successful login
     } catch (error) {
       console.error("Login failed:", error);

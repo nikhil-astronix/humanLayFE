@@ -267,7 +267,7 @@ export default function GrantDetailsPage() {
                           View Profile
                         </button>
                         <button className="px-4 py-2 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700">
-                          Request Contact
+                          Request Connect
                         </button>
                       </div>
                     </div>
