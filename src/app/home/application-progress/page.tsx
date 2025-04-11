@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/navbar";
 import { MessageCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 interface Task {
   id: string;
@@ -70,6 +71,7 @@ const columnVariants = {
 };
 
 export default function ProgressPage() {
+  const router = useRouter();
   const [tasks, setTasks] = useState<TaskState>(initialTasks);
   const [completedSteps, setCompletedSteps] = useState(2);
   const totalSteps = 5;
@@ -189,13 +191,14 @@ export default function ProgressPage() {
                           {(provided, snapshot) => (
                             <div
                               ref={provided.innerRef}
+                              {...provided.dragHandleProps}
                               {...provided.draggableProps}
                               className={`bg-white rounded-lg border p-4 ${
                                 snapshot.isDragging ? "shadow-lg" : ""
                               }`}
                             >
                               <div 
-                                {...provided.dragHandleProps}
+                            
                                 className="flex items-start gap-3"
                               >
                                 <div className="flex-1">
@@ -256,12 +259,13 @@ export default function ProgressPage() {
                             <div
                               ref={provided.innerRef}
                               {...provided.draggableProps}
+                              {...provided.dragHandleProps}
                               className={`bg-white rounded-lg border p-4 ${
                                 snapshot.isDragging ? "shadow-lg" : ""
                               }`}
                             >
                               <div 
-                                {...provided.dragHandleProps}
+                               
                                 className="flex flex-col"
                               >
                                 <h3 className="font-medium text-gray-900">{task.content}</h3>
@@ -316,12 +320,13 @@ export default function ProgressPage() {
                             <div
                               ref={provided.innerRef}
                               {...provided.draggableProps}
+                              {...provided.dragHandleProps}
                               className={`bg-white rounded-lg border p-4 ${
                                 snapshot.isDragging ? "shadow-lg" : ""
                               }`}
                             >
                               <div 
-                                {...provided.dragHandleProps}
+                               
                                 className="flex flex-col"
                               >
                                 <h3 className="font-medium text-gray-900">{task.content}</h3>
@@ -348,6 +353,7 @@ export default function ProgressPage() {
         >
           <div className="flex gap-4">
             <motion.button 
+            onClick={() => router.push('/dashboard/grant-details')}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="px-4 py-2 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700"

@@ -1,5 +1,8 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 export default function ProfileCard() {
+  const router = useRouter();
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
       <div className="flex items-center space-x-4">
@@ -20,7 +23,7 @@ export default function ProfileCard() {
           </p>
         </div>
       </div>
-      <button className="bg-orange-600 text-white px-4 py-2 rounded-md">
+      <button  onClick={() => router.push('/home/seeker')} className="bg-orange-600 text-white px-4 py-2 rounded-md">
         Edit Profile
       </button>
     </div>
