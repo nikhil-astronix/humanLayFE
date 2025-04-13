@@ -130,6 +130,7 @@ export default function GrantOpportunities() {
       <main className="min-h-screen bg-gray-50 px-4 py-8">
         <div className="max-w-6xl mx-auto">
           <motion.div
+            key="main-container"
             initial="initial"
             animate="animate"
             variants={{
@@ -140,19 +141,20 @@ export default function GrantOpportunities() {
               }
             }}
           >
-            <motion.div variants={fadeInUp} className="mb-8">
+            <motion.div key="header" variants={fadeInUp} className="mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Your Grant Opportunities</h1>
               <p className="text-gray-600">Discover trending, upcoming, and urgent grants tailored for you</p>
             </motion.div>
 
             <section className="mb-12">
-              <motion.div variants={fadeInUp} className="flex items-center gap-2 mb-6">
+              <motion.div key="trending-header" variants={fadeInUp} className="flex items-center gap-2 mb-6">
                 <TrendingUp className="w-5 h-5 text-indigo-600" />
                 <h2 className="text-xl font-semibold text-gray-900">Trending Grants</h2>
               </motion.div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <GrantCard
+                  key="faire-grant"
                   title="Faire Grant"
                   amount="$5,000"
                   description="For tech startups in ideation phase, perfect for woman-owned businesses"
@@ -160,6 +162,7 @@ export default function GrantOpportunities() {
                   variant="trending"
                 />
                 <GrantCard
+                  key="women-tech-fund"
                   title="WomenTech Fund"
                   amount="$7,500"
                   description="Supporting women-led technology ventures in early stages"
@@ -169,8 +172,10 @@ export default function GrantOpportunities() {
               </div>
               
               <motion.button
+                key="see-more-trending"
                 variants={fadeInUp}
                 className="mt-4 ml-auto text-indigo-600 flex text-end cursor-pointer items-center gap-1 hover:text-indigo-700"
+                aria-label="See more trending grants"
               >
                 See More Trending Grants
                 <ArrowRight className="w-4 h-4" />
@@ -178,13 +183,14 @@ export default function GrantOpportunities() {
             </section>
 
             <section className="mb-12">
-              <motion.div variants={fadeInUp} className="flex items-center gap-2 mb-6">
+              <motion.div key="upcoming-header" variants={fadeInUp} className="flex items-center gap-2 mb-6">
                 <Calendar className="w-5 h-5 text-emerald-600" />
                 <h2 className="text-xl font-semibold text-gray-900">Upcoming Grants</h2>
               </motion.div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <GrantCard
+                  key="tech-seed-fund"
                   title="Tech Seed Fund"
                   amount="$10,000"
                   description="Perfect for product development and MVP creation"
@@ -192,6 +198,7 @@ export default function GrantOpportunities() {
                   openingDate="April 15, 2025"
                 />
                 <GrantCard
+                  key="innovation-first"
                   title="Innovation First"
                   amount="$15,000"
                   description="For innovative tech solutions in early stages"
@@ -202,13 +209,14 @@ export default function GrantOpportunities() {
             </section>
 
             <section>
-              <motion.div variants={fadeInUp} className="flex items-center gap-2 mb-6">
+              <motion.div key="ending-header" variants={fadeInUp} className="flex items-center gap-2 mb-6">
                 <Clock className="w-5 h-5 text-red-600" />
                 <h2 className="text-xl font-semibold text-gray-900">Grants Ending Soon</h2>
               </motion.div>
               
               <div className="grid md:grid-cols-2 gap-6">
                 <GrantCard
+                  key="local-innovator"
                   title="Local Innovator Grant"
                   amount="$2,000"
                   description="Supporting local tech entrepreneurs"
@@ -217,6 +225,7 @@ export default function GrantOpportunities() {
                   variant="ending"
                 />
                 <GrantCard
+                  key="quick-start"
                   title="Quick Start Fund"
                   amount="$3,500"
                   description="Rapid funding for tech startups"

@@ -18,6 +18,7 @@ const fadeInUp = {
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -27,6 +28,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     try {
       const response = await loginIn(formData.email, formData.password);
@@ -39,9 +41,13 @@ export default function LoginPage() {
       const role = profileresponse?.data?.role ?? "";
       localStorage.setItem("role", role);
       router.push("/home"); // Redirect on successful login
-    } catch (error) {
-      console.error("Login failed:", error);
-      alert(error); // Simple error handling
+    } catch (error: any) {
+      setError(error.message || "Failed to login. Please try again.");
+      // Clear password field on error
+      setFormData(prev => ({
+        ...prev,
+        password: ""
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -83,6 +89,12 @@ export default function LoginPage() {
                 Sign in to your account to continue
               </p>
             </div>
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-lg">
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
