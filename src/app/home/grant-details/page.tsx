@@ -4,7 +4,7 @@ import { Bookmark, Bot, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
-import { motion, AnimatePresence } from "framer-motion";
+// import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
 const fadeInUp = {
