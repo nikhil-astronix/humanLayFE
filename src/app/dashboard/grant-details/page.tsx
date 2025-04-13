@@ -51,7 +51,7 @@ export default function GrantDetailsPage() {
     }
   ];
 
-  const getStatusBadgeClass = (status: Applicant["status"]) => {
+/*  const getStatusBadgeClass = (status: Applicant["status"]) => {
     switch (status) {
       case "Pending":
         return "bg-yellow-50 text-yellow-800";
@@ -62,7 +62,7 @@ export default function GrantDetailsPage() {
       default:
         return "bg-gray-50 text-gray-800";
     }
-  };
+  }; */
 
   return (
     <div className="min-h-screen bg-gray-50">
