@@ -84,8 +84,8 @@ export default function GrantDetailsPage() {
     );
   };
 
-  const saveGrant =(id: any)=>{
-    saveGrant(id)
+  const saveGrantHandler = (id: string) => {
+    saveGrant(id);
   }
 
   return (
@@ -226,7 +226,7 @@ export default function GrantDetailsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full border-2 border-orange-500 text-orange-500 py-2.5 px-4 rounded-lg text-sm font-medium hover:bg-orange-50"
-                onClick={saveGrant}
+                onClick={() => saveGrantHandler(grantDetails.title)}
               >
                 Save Grant
               </motion.button>

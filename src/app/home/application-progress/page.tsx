@@ -6,6 +6,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import Image from 'next/image';
 
 interface Task {
   id: string;
@@ -378,17 +379,18 @@ export default function ProgressPage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-6">Ask Your Mentor</h2>
           
           <div className="flex items-start gap-4 mb-4">
-            <div className="h-10 w-10 rounded-full overflow-hidden">
-              <img
+            <div className="h-10 w-10 rounded-full overflow-hidden relative">
+              <Image
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                 alt="Mentor"
-                className="h-full w-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-900">Jane - Won this grant</h3>
+              <h3 className="text-sm font-medium text-gray-900">Jane &ndash; Won this grant</h3>
               <p className="text-xs text-gray-500 mb-2">Available now</p>
-              <button className="inline-flex items-center gap-1.5 text-xs text-orange-600  font-medium">
+              <button className="inline-flex items-center gap-1.5 text-xs text-orange-600 font-medium">
                 <MessageCircle className="w-4 h-4" />
                 Message
               </button>

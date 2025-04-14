@@ -41,8 +41,9 @@ export default function LoginPage() {
       const role = profileresponse?.data?.role ?? "";
       localStorage.setItem("role", role);
       router.push("/home"); // Redirect on successful login
-    } catch (error: any) {
-      setError(error.message || "Failed to login. Please try again.");
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to login. Please try again.";
+      setError(errorMessage);
       // Clear password field on error
       setFormData(prev => ({
         ...prev,

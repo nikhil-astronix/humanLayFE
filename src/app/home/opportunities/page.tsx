@@ -110,19 +110,17 @@ const GrantCard = ({
 };
 
 export default function GrantOpportunities() {
-
   const [trendData, setTrendData] = useState<TrendingGrantData>();
 
-  useEffect( () => {
-   getGrantData()
+  useEffect(() => {
+    getGrantData();
   }, []);
 
- const getGrantData = async()=>{
-    let newdata = await getTrendingGrants()
-    let trendgrantdata = newdata.data
-    setTrendData(trendgrantdata);
-    
-  }
+  const getGrantData = async () => {
+    const newData = await getTrendingGrants();
+    const trendGrantData = newData.data;
+    setTrendData(trendGrantData);
+  };
 
   return (
     <>

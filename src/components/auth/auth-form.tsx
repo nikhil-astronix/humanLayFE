@@ -54,7 +54,6 @@ export function AuthForm() {
   const [userEmail, setUserEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const steps: AuthStep[] = [
     {
@@ -542,17 +541,9 @@ export function AuthForm() {
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-600"
                   >
-                    {isSubmitting ? (
-                      <>
-                        <ButtonLoader />
-                        <span className="ml-2">Setting up...</span>
-                      </>
-                    ) : (
-                      "Complete Setup"
-                    )}
+                    Complete Setup
                   </button>
                 </form>
               </div>

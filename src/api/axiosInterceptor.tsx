@@ -1,23 +1,23 @@
-import axios, { AxiosRequestHeaders } from "axios";
+import axios, { AxiosError } from "axios";
+import type { AxiosRequestConfig } from "axios";
 
 // Create an Axios instance with retry logic
 const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://api-human-layered.com",  // Production API URL
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://api-human-layered.com",
   headers: {
     "Content-Type": "application/json",
   },
-  // Increase timeout for slower connections
-  timeout: 30000, // 30 seconds
-  // Add withCredentials for CORS
-  withCredentials: false // Set to false for cross-origin requests without credentials
+  timeout: 30000,
+  withCredentials: false
 });
 
 // Retry logic configuration
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 2 seconds
 
-const retryRequest = async (error: any, retryCount = 0) => {
-  const request = error.config;
+const retryRequest = async (error: AxiosError, retryCount = 0) => {
+  const config = error.config as AxiosRequestConfig & { url: string };
+  if (!config) return Promise.reject(error);
   
   // Don't retry on 401, 403, or 404
   if (error.response?.status && [401, 403, 404].includes(error.response.status)) {
@@ -27,15 +27,12 @@ const retryRequest = async (error: any, retryCount = 0) => {
   if (retryCount < MAX_RETRIES && (
     error.code === 'ERR_NETWORK' || 
     error.code === 'ECONNABORTED' || 
-    error.response?.status >= 500
+    (error.response?.status ?? 0) >= 500
   )) {
     retryCount++;
     console.log(`Retry attempt ${retryCount} of ${MAX_RETRIES}`);
-    // Wait for RETRY_DELAY * retryCount milliseconds
     await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * retryCount));
-    // Create a new request with increased timeout
-    request.timeout = 30000 * (retryCount + 1);
-    return apiClient(request);
+    return apiClient({ ...config, timeout: 30000 * (retryCount + 1) });
   }
   return Promise.reject(error);
 };
@@ -46,7 +43,7 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem("token");
 
     if (!config.headers) {
-      config.headers = {} as AxiosRequestHeaders;
+      config.headers = {};
     }
 
     if (token) {

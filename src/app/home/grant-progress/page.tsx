@@ -1,8 +1,9 @@
 "use client";
 
+import { AlertCircle } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { motion } from "framer-motion";
-import { Clock, FileText, CheckCircle, AlertCircle, Calendar, DollarSign, Users } from "lucide-react";
+import { Clock, FileText, CheckCircle, Calendar, DollarSign, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function GrantProgress() {

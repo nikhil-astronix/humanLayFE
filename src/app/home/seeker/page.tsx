@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Target, Lightbulb, MapPin, Building2, TrendingUp, FileText, CreditCard, ChevronUp, ChevronDown, Pencil, Save, ChevronLeft, ChevronRight } from "lucide-react";
-import { Suspense, useEffect, useState } from "react";
+import { MapPin, Building2, TrendingUp, FileText, CreditCard, ChevronUp, ChevronDown, Pencil, Save, ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -84,8 +84,6 @@ const ActionCard = ({
 
 export default function GrantSeekerDashboard() {
   const router = useRouter();
-  const [userName, setUserName] = useState<string>("");
-  const [userDesignation, setUserDesignation] = useState<string>("");
   const [isEditMode, setIsEditMode] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [startupDetails, setStartupDetails] = useState({
@@ -185,10 +183,7 @@ export default function GrantSeekerDashboard() {
   };
 
   useEffect(() => {
-    const name = localStorage.getItem('userName');
-    const designation = localStorage.getItem('userDesignation');
-    if (name) setUserName(name);
-    if (designation) setUserDesignation(designation);
+    // Removed unused state updates
   }, []);
 
   return (
