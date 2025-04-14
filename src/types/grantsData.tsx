@@ -13,3 +13,10 @@ export interface GrantData {
     mentorshipProgram: boolean;
   };
 }
+
+export interface TrendingGrantData {
+  grantName: string,
+  amount: number,
+  description:string,
+  applicationDeadLine: string
+}

@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import { MessageSquare, ArrowRight, Calendar, Clock, Bookmark, TrendingUp, Send, Eye } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getTrendingGrants } from "@/services/grantService";
+import { TrendingGrantData } from "@/types/grantsData";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -107,6 +110,20 @@ const GrantCard = ({
 };
 
 export default function GrantOpportunities() {
+
+  const [trendData, setTrendData] = useState<TrendingGrantData>();
+
+  useEffect( () => {
+   getGrantData()
+  }, []);
+
+ const getGrantData = async()=>{
+    let newdata = await getTrendingGrants()
+    let trendgrantdata = newdata.data
+    setTrendData(trendgrantdata);
+    
+  }
+
   return (
     <>
       <Navbar />
