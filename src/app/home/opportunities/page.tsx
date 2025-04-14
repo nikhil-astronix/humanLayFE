@@ -111,15 +111,23 @@ const GrantCard = ({
 
 export default function GrantOpportunities() {
   const [trendData, setTrendData] = useState<TrendingGrantData>();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getGrantData();
   }, []);
 
   const getGrantData = async () => {
-    const newData = await getTrendingGrants();
-    const trendGrantData = newData.data;
-    setTrendData(trendGrantData);
+    try {
+      setIsLoading(true);
+      const newData = await getTrendingGrants();
+      const trendGrantData = newData.data;
+      setTrendData(trendGrantData);
+    } catch (error) {
+      console.error("Error fetching trending grants:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -151,22 +159,25 @@ export default function GrantOpportunities() {
               </motion.div>
               
               <div className="grid md:grid-cols-2 gap-6">
-                <GrantCard
-                  key="faire-grant"
-                  title="Faire Grant"
-                  amount="$5,000"
-                  description="For tech startups in ideation phase, perfect for woman-owned businesses"
-                  status="Trending"
-                  variant="trending"
-                />
-                <GrantCard
-                  key="women-tech-fund"
-                  title="WomenTech Fund"
-                  amount="$7,500"
-                  description="Supporting women-led technology ventures in early stages"
-                  status="Trending"
-                  variant="trending"
-                />
+                {isLoading ? (
+                  <div className="col-span-2 flex justify-center items-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                  </div>
+                ) : trendData ? (
+                  <GrantCard
+                    key={trendData.grantName}
+                    title={trendData.grantName}
+                    amount={`$${trendData.amount.toLocaleString()}`}
+                    description={trendData.description}
+                    status="Trending"
+                    variant="trending"
+                    dueDate={trendData.applicationDeadLine}
+                  />
+                ) : (
+                  <div className="col-span-2 text-center text-gray-600 py-8">
+                    No trending grants available at the moment
+                  </div>
+                )}
               </div>
               
               <motion.button

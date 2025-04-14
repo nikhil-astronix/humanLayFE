@@ -27,7 +27,7 @@ const staggerContainer = {
 };
 
 export default function WinnerProfile() {
-  const router = useRouter();
+ 
 
   return (
     <div className="min-h-screen bg-gray-50">

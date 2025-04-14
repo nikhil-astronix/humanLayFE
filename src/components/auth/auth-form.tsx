@@ -12,7 +12,7 @@ import apiClient from "@/api/axiosInterceptor";
 import { AuthResponse } from "@/types/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ButtonLoader } from "@/components/ui/loader";
+// import { ButtonLoader } from "@/components/ui/loader";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),

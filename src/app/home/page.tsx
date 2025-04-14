@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Target, Lightbulb, MapPin, Building2, TrendingUp, FileText, CreditCard } from "lucide-react";
+import { Target, Lightbulb, TrendingUp, FileText, CreditCard } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { useRouter } from "next/navigation";

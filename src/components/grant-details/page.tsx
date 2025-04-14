@@ -4,9 +4,9 @@ import { Bookmark, Bot, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import { saveGrant } from "@/services/grantService";
+
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -84,9 +84,10 @@ export default function GrantDetailsPage() {
     );
   };
 
-  const saveGrant =(id: any)=>{
-    saveGrant(id)
-  }
+  const saveGrant = (id: string) => {
+    // TODO: Implement grant saving functionality
+    console.log(`Saving grant with ID: ${id}`);
+  };
 
   return (
     <motion.div 
@@ -226,7 +227,7 @@ export default function GrantDetailsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="w-full border-2 border-orange-500 text-orange-500 py-2.5 px-4 rounded-lg text-sm font-medium hover:bg-orange-50"
-                onClick={saveGrant}
+                onClick={() => saveGrant(grantDetails.title)}
               >
                 Save Grant
               </motion.button>

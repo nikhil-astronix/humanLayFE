@@ -1,10 +1,10 @@
 "use client";
 
-import { AlertCircle } from "lucide-react";
+
 import { Navbar } from "@/components/layout/navbar";
-import { motion } from "framer-motion";
+
 import { Clock, FileText, CheckCircle, Calendar, DollarSign, Users } from "lucide-react";
-import Link from "next/link";
+
 
 export default function GrantProgress() {
   const grantProgress = {
@@ -70,18 +70,6 @@ export default function GrantProgress() {
     ]
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "text-green-600";
-      case "pending":
-        return "text-yellow-600";
-      case "upcoming":
-        return "text-blue-600";
-      default:
-        return "text-gray-600";
-    }
-  };
 
   const getStatusBadgeColor = (status: string) => {
     switch (status) {

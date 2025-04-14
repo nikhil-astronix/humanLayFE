@@ -33,54 +33,54 @@ const slideIn = {
   transition: { duration: 0.5 }
 };
 
-const LoadingCard = () => (
-  <div className="w-full h-[200px] bg-gray-100 animate-pulse rounded-xl"></div>
-);
+// const LoadingCard = () => (
+//   <div className="w-full h-[200px] bg-gray-100 animate-pulse rounded-xl"></div>
+// );
 
-const StatsCard = ({ value, label }: { value: string; label: string }) => (
-  <motion.div
-    variants={fadeInUp}
-    className="text-center p-6 bg-white shadow rounded-xl"
-  >
-    <h3 className="text-2xl font-bold text-orange-600">{value}</h3>
-    <p className="text-gray-500 mt-1">{label}</p>
-  </motion.div>
-);
+// const StatsCard = ({ value, label }: { value: string; label: string }) => (
+//   <motion.div
+//     variants={fadeInUp}
+//     className="text-center p-6 bg-white shadow rounded-xl"
+//   >
+//     <h3 className="text-2xl font-bold text-orange-600">{value}</h3>
+//     <p className="text-gray-500 mt-1">{label}</p>
+//   </motion.div>
+// );
 
-const ActionCard = ({
-  title,
-  description,
-  buttonText,
-  icon,
-  onClick,
-  className = "",
-}: {
-  title: string;
-  description: string;
-  buttonText: string;
-  icon: React.ReactNode;
-  onClick: () => void;
-  className?: string;
-}) => (
-  <motion.div
-    variants={fadeInUp}
-    className={`bg-white shadow rounded-xl p-6 flex flex-col items-center justify-center ${className}`}
-  >
-    <div className="h-12 w-12 rounded-full flex items-center justify-center mb-4 icon-bg">
-      {icon}
-    </div>
-    <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-    <p className="text-gray-500 mb-4">{description}</p>
-    <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className="w-full py-3 px-4 text-white rounded-lg font-medium button"
-    >
-      {buttonText}
-    </motion.button>
-  </motion.div>
-);
+// const ActionCard = ({
+//   title,
+//   description,
+//   buttonText,
+//   icon,
+//   onClick,
+//   className = "",
+// }: {
+//   title: string;
+//   description: string;
+//   buttonText: string;
+//   icon: React.ReactNode;
+//   onClick: () => void;
+//   className?: string;
+// }) => (
+//   <motion.div
+//     variants={fadeInUp}
+//     className={`bg-white shadow rounded-xl p-6 flex flex-col items-center justify-center ${className}`}
+//   >
+//     <div className="h-12 w-12 rounded-full flex items-center justify-center mb-4 icon-bg">
+//       {icon}
+//     </div>
+//     <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+//     <p className="text-gray-500 mb-4">{description}</p>
+//     <motion.button
+//       whileHover={{ scale: 1.02 }}
+//       whileTap={{ scale: 0.98 }}
+//       onClick={onClick}
+//       className="w-full py-3 px-4 text-white rounded-lg font-medium button"
+//     >
+//       {buttonText}
+//     </motion.button>
+//   </motion.div>
+// );
 
 export default function GrantSeekerDashboard() {
   const router = useRouter();
@@ -177,10 +177,10 @@ export default function GrantSeekerDashboard() {
     setIsExpanded(true); // Always expand when entering edit mode
   };
 
-  const handleSaveClick = () => {
-    setIsEditMode(false);
-    setIsExpanded(false); // Collapse after saving
-  };
+  // const handleSaveClick = () => {
+  //   setIsEditMode(false);
+  //   setIsExpanded(false); // Collapse after saving
+  // };
 
   useEffect(() => {
     // Removed unused state updates
