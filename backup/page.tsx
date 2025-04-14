@@ -110,17 +110,13 @@ export default function HomePage() {
                   <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-800 text-sm">Early-Stage</span>
                   <span className="px-3 py-1 rounded-full bg-pink-100 text-pink-800 text-sm">Woman-Owned</span>
                 </div>
-                {/* <motion.div
+                <motion.div
                   variants={fadeInUp}
                   className="mt-4 p-4 rounded-lg bg-emerald-100 text-emerald-800 inline-block"
                 >
                   <p className="font-medium">Your profile is all set!</p>
                   <p className="text-sm">You're ready to explore personalized grant opportunities</p>
-<<<<<<< Updated upstream
                 </motion.div>
-=======
-                </motion.div> */}
->>>>>>> Stashed changes
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-6 mb-8">
