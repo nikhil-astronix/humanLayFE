@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { loginIn } from "@/services/authService"; // Import the service
 import { getUserData } from '@/services/userProfileService';
+import { AxiosError } from "axios";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -41,8 +42,10 @@ export default function LoginPage() {
       const role = profileresponse?.data?.role ?? "";
       localStorage.setItem("role", role);
       router.push("/home"); // Redirect on successful login
-    } catch (error: Error | unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to login. Please try again.";
+    } catch (error: unknown) {
+      const errorMessage = 
+        (error as AxiosError)?.response?.data?.message || 
+        (error instanceof Error ? error.message : "Failed to login. Please try again.");
       setError(errorMessage);
       // Clear password field on error
       setFormData(prev => ({

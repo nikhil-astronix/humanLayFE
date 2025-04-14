@@ -388,7 +388,7 @@ export default function ProgressPage() {
               />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-900">Jane &ndash; Won this grant</h3>
+              <h3 className="text-sm font-medium text-gray-900">Jane &apos; Won this grant</h3>
               <p className="text-xs text-gray-500 mb-2">Available now</p>
               <button className="inline-flex items-center gap-1.5 text-xs text-orange-600 font-medium">
                 <MessageCircle className="w-4 h-4" />

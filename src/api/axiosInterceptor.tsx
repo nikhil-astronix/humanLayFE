@@ -1,5 +1,4 @@
-import axios, { AxiosError } from "axios";
-import type { AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 // Create an Axios instance with retry logic
 const apiClient = axios.create({
@@ -52,7 +51,7 @@ apiClient.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     console.error("Request error:", error);
     return Promise.reject(error);
   }
@@ -61,7 +60,7 @@ apiClient.interceptors.request.use(
 // Response Interceptor
 apiClient.interceptors.response.use(
   (response) => response,
-  async (error) => {
+  async (error: AxiosError) => {
     // Network or server error
     if (error.code === 'ERR_NETWORK' || error.code === 'ECONNABORTED' || !error.response) {
       console.error('Network Error:', error);
@@ -92,7 +91,7 @@ apiClient.interceptors.response.use(
         // Attempt retry for server errors
         return retryRequest(error);
       default:
-        console.error("API Error:", error.response?.data || error.message);
+        console.error("API Error:", error.response?.data || error.toString());
     }
 
     return Promise.reject(error);

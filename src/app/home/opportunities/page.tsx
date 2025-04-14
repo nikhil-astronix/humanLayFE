@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageSquare, ArrowRight, Calendar, Clock, Bookmark, TrendingUp, Send, Eye } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Bookmark, TrendingUp, Eye } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

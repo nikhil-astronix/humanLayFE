@@ -84,8 +84,14 @@ export default function GrantDetailsPage() {
     );
   };
 
-  const saveGrantHandler = (id: string) => {
-    saveGrant(id);
+  const saveGrantHandler = async (id: string) => {
+    try {
+      await saveGrant(id);
+      // You could add a success notification here
+    } catch (error) {
+      console.error('Failed to save grant:', error);
+      // You could add an error notification here
+    }
   }
 
   return (
