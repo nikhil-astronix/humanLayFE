@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { MapPin, Building2, Clock, Mail, User, Trophy, Gift, Lightbulb, Send, Check } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },

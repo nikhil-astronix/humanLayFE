@@ -359,7 +359,7 @@ export default function ProgressPage() {
               whileTap={{ scale: 0.98 }}
               className="px-4 py-2 text-sm font-medium text-white bg-orange-600 rounded-md hover:bg-orange-700"
             >
-           <p>   Go to Faire's Site </p>
+           <p>   Go to Faire&apos;s Site </p>
             </motion.button>
             <motion.button 
               whileHover={{ scale: 1.02 }}
@@ -388,7 +388,7 @@ export default function ProgressPage() {
               />
             </div>
             <div>
-              <h3 className="text-sm font-medium text-gray-900">Jane &apos;s Won this grant</h3>
+              <h3 className="text-sm font-medium text-gray-900">Jane&apos;s Won this grant</h3>
               <p className="text-xs text-gray-500 mb-2">Available now</p>
               <button className="inline-flex items-center gap-1.5 text-xs text-orange-600 font-medium">
                 <MessageCircle className="w-4 h-4" />
